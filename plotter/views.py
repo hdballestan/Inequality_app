@@ -19,7 +19,7 @@ def extract(request):
     df = pd.read_csv("/home/ytmor2/Documents/venom/Inequality_app/media/metadata.csv")
     df.to_sql(Metadata._meta.db_table, con=con, if_exists='append', index=False)
     con.close()
-    print('i')
+
 
     return HttpResponse("hola mundo")
 
