@@ -16,7 +16,7 @@ engine = create_engine(mi_ruta)
 
 def extract(request):
     con = engine.connect()
-    df = pd.read_csv("/home/ballesta/Documents/Psico/Inequality_app/media/metadata.csv")
+    df = pd.read_csv("/home/ytmor2/Documents/venom/Inequality_app/media/metadata.csv")
     df.to_sql(Metadata._meta.db_table, con=con, if_exists='append', index=False)
     con.close()
     print('i')
