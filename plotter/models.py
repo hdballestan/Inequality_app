@@ -92,12 +92,12 @@ class BaseMeta(models.Model):
     country_code = models.CharField(max_length=3, verbose_name='Country Code', null=True, blank=True,
                                     db_column='Country Code')
     region = models.CharField(max_length=150, verbose_name='Region', null=True, blank=True, db_column='Region')
-    income = models.CharField(max_length=150, verbose_name='Income Group', null=True, blank=True,
-                              db_column='Income Group')
-    special_notes = models.CharField(max_length=150, verbose_name='Special Notes', null=True, blank=True,
-                                     db_column='Special Notes')
-    table_name = models.CharField(max_length=150, verbose_name='Table Name', null=True, blank=True,
-                                  db_column='Table Name')
+    income = models.CharField(max_length=150, verbose_name='IncomeGroup', null=True, blank=True,
+                              db_column='IncomeGroup')
+    special_notes = models.CharField(max_length=940, verbose_name='SpecialNotes', null=True, blank=True,
+                                     db_column='SpecialNotes')
+    table_name = models.CharField(max_length=150, verbose_name='TableName', null=True, blank=True,
+                                  db_column='TableName')
 
     class Meta:
         abstract = True
@@ -105,6 +105,6 @@ class BaseMeta(models.Model):
 
 class Metadata(BaseMeta):
     class Meta:
-        db_table = "Metadata-Countries"
+        db_table = "MetadataCountries"
         verbose_name = 'country'
         verbose_name_plural = 'countries'
