@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from plotter.views import extract
+from plotter.views import extract, clean
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('data/', extract),
+    path('clean/', clean),
+
 ]
