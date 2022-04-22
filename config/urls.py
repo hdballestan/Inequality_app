@@ -21,8 +21,8 @@ from plotter.views import extract, clean, process, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('data/', extract),
-    path('clean/', clean),
+    #path('data/', extract),
+    #path('clean/', clean),
     path('calc/', process),
     path('', home),
 ]
