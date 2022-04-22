@@ -53,5 +53,4 @@ def process(request):
     dt.loc[:, ~dt.columns.isin(['id', 'country_id', 'country_name', 'indicator_name', 'indicator_code'])]
     df = dt.mean().tolist()
 
-    print('i')
     return redirect("/admin/")
