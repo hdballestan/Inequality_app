@@ -8,6 +8,7 @@ from plotter.conections import con_ineq
 from sqlalchemy import create_engine
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
+import matplotlib.pyplot as plt
 from django.urls import reverse
 import numpy as np
 
@@ -24,9 +25,9 @@ def home(*args, **kwargs):
 
 def extract(request):
     con = engine.connect()
-    df1 = pd.read_csv("/home/ballesta/Documents/Psico/Inequality_app/media/data.csv", delimiter=",")
+    df1 = pd.read_csv(os.getenv("DATA"), delimiter=",")
     df1.to_sql(Data._meta.db_table, con=con, if_exists='append', index=False)
-    df2 = pd.read_csv("/home/ballesta/Documents/Psico/Inequality_app/media/metadata.csv", delimiter=",")
+    df2 = pd.read_csv(os.getenv("METADATA"), delimiter=",")
     df2.to_sql(Metadata._meta.db_table, con=con, if_exists='append', index=False)
     con.close()
     return HttpResponse("hola mundo")
@@ -50,7 +51,9 @@ def clean(request):
 def process(request):
     dt = pd.DataFrame.from_records(Data.objects.all().values())
     dt = dt.fillna(0)
-    dt.loc[:, ~dt.columns.isin(['id', 'country_id', 'country_name', 'indicator_name', 'indicator_code'])]
-    df = dt.mean().tolist()
+    dt = dt.loc[:, ~dt.columns.isin(['id', 'country_id', 'country_name', 'indicator_name', 'indicator_code'])]
+    df = dt.mean().to_frame()
+    plt.hist(df)
+    plt.show()
 
     return redirect("/admin/")
