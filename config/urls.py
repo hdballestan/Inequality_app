@@ -15,14 +15,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from plotter.views import process
+from plotter.views import home
+#from plotter.views import clean
 
-from plotter.views import extract, clean, process, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('data/', extract),
-    #path('clean/', clean),
-    path('calc/', process),
+    path('dashboard/', include('plotter.urls')),
     path('', home),
 ]

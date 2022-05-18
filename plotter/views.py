@@ -1,16 +1,19 @@
 import os
-from django.shortcuts import render
-from plotter.models import Metadata
-from plotter.models import Data
 import pandas as pd
+from django.core import serializers
 from django.http import HttpResponse
-from plotter.conections import con_ineq
-from sqlalchemy import create_engine
-from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
-import matplotlib.pyplot as plt
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.urls import reverse
-import numpy as np
+from sqlalchemy import create_engine
+from plotter.conections import con_ineq
+from plotter.models import Data
+from plotter.models import Metadata
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html', {})
 
 
 mi_ruta = "mysql://{}:{}@{}/{}".format(os.getenv("DB_USER_READ"), os.getenv("DB_PASSWORD_READ"),
@@ -33,27 +36,22 @@ def extract(request):
     return HttpResponse("hola mundo")
 
 
-def clean(request):
-    con = con_ineq()
-    cursor = con.cursor()
-    table1 = Data.objects.model._meta.db_table
-    sql1 = "DELETE FROM {}".format(table1)
-    cursor.execute(sql1)
-    cursor.execute("COMMIT")
-    table2 = Metadata.objects.model._meta.db_table
-    sql2 = 'DELETE FROM {}'.format(table2)
-    cursor.execute(sql2)
-    cursor.execute("COMMIT")
-    con.close()
-    return HttpResponse("la base a sido reiniciada")
+# def clean(request):
+#     con = con_ineq()
+#     cursor = con.cursor()
+#     table1 = Data.objects.model._meta.db_table
+#     sql1 = "DELETE FROM {}".format(table1)
+#     cursor.execute(sql1)
+#     cursor.execute("COMMIT")
+#     table2 = Metadata.objects.model._meta.db_table
+#     sql2 = 'DELETE FROM {}'.format(table2)
+#     cursor.execute(sql2)
+#     cursor.execute("COMMIT")
+#     con.close()
+#     return HttpResponse("la base a sido reiniciada")
 
 
 def process(request):
-    dt = pd.DataFrame.from_records(Data.objects.all().values())
-    dt = dt.fillna(0)
-    dt = dt.loc[:, ~dt.columns.isin(['id', 'country_id', 'country_name', 'indicator_name', 'indicator_code'])]
-    df = dt.mean().to_frame()
-    plt.hist(df)
-    plt.show()
-
-    return redirect("/admin/")
+    dataset = Data.objects.all()
+    data = serializers.serialize('json', dataset)
+    return JsonResponse(data, safe=False)
