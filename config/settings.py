@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #App
     'plotter',
+    'import_export',
+
 ]
 
 MIDDLEWARE = [
